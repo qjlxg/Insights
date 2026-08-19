@@ -14,22 +14,18 @@ from utils import (clear_files, g0, keep, list_file_paths, list_folder_paths,
 
 # ==================== 更接近真人的用户名生成（大幅降低风控） ====================
 def natural_rand_id():
-    """生成更像真人使用的用户名，尽量避免连续辅音、高熵、元音比例异常"""
     first_names = [
         'alex', 'mike', 'john', 'david', 'james', 'robert', 'tom', 'jack',
         'kevin', 'brian', 'jason', 'eric', 'steven', 'daniel', 'chris',
-        'andy', 'tony', 'peter', 'mark', 'paul', 'steve', 'brian',
+        'andy', 'tony', 'peter', 'mark', 'paul', 'steve',
         'lucy', 'lily', 'amy', 'anna', 'sara', 'emma', 'olivia', 'sophia',
         'nina', 'mia', 'ava', 'ella', 'grace', 'chloe', 'zoe', 'ruby',
         'chen', 'wang', 'li', 'zhang', 'liu', 'yang', 'huang', 'zhao',
         'lin', 'wu', 'xu', 'sun', 'ma', 'zhu', 'hu', 'guo'
     ]
-    
     last_names = ['smith', 'johnson', 'brown', 'wilson', 'taylor', 'clark', 'lee', 'walker',
                   'wang', 'li', 'zhang', 'liu', 'chen', 'yang', 'huang', 'zhao']
-    
     style = randint(1, 6)
-    
     if style == 1:
         return choice(first_names) + choice(['88', '66', '99', '520', '666', '888', str(randint(10, 99))])
     elif style == 2:
@@ -43,9 +39,7 @@ def natural_rand_id():
     else:
         return choice(first_names) + '_' + choice(['88', '66', '99', '520', '1314', str(randint(10, 99))])
 
-
 def make_password(prefix: str) -> str:
-    """统一强密码生成，保证长度和复杂度"""
     return (prefix + 'Anodes!1860')[:16]
 
 
@@ -90,7 +84,7 @@ def should_turn(session: PanelSession, opt: dict, cache: dict[str, list[str]]):
         msg = str(e)
         if '邮箱' in msg and ('不存在' in msg or '禁' in msg or '黑' in msg):
             if (d := cache['email'][0].split('@')[1]) not in ('gmail.com', 'qq.com', g0(cache, 'email_domain')):
-                cache.setdefault('banned_domains', []).append(d)
+                cache['banned_domains'].append(d)
             return 2,
         raise e
 
@@ -129,7 +123,6 @@ def _get_email_and_email_code(kwargs, session: PanelSession, opt: dict, cache: d
             cache.setdefault('banned_domains', []).append(email.split('@')[1])
             raise Exception(f'获取邮箱验证码超时({email})')
         kwargs['email_code'] = email_code
-        # 修复：从当前 email 提取前缀生成密码，避免 NameError
         prefix = email.split('@')[0]
         kwargs['password'] = make_password(prefix)
         return email
@@ -427,8 +420,7 @@ if __name__ == '__main__':
         if host not in opt:
             del cache[host]
 
-    # 降低并发 + 单任务超时，减少僵尸线程导致的卡死
-    with ThreadPoolExecutor(max_workers=12) as executor:
+    with ThreadPoolExecutor(max_workers=20) as executor:
         futures = {
             executor.submit(get_trial, h, opt[h], cache[h]): h
             for h, *_ in cfg
@@ -471,7 +463,6 @@ if __name__ == '__main__':
     new_cache = {k: cache[k] for k in sorted_keys}
     write_cfg('trial.cache', new_cache)
 
-    # 提取订阅链接并严格过滤流量 < 1G 的节点
     valid_subs = []
     for host, data in new_cache.items():
         sub_info = data.get('sub_info')
