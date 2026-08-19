@@ -31,23 +31,22 @@ def natural_rand_id():
     style = randint(1, 6)
     
     if style == 1:
-        # alex88 / mike66
         return choice(first_names) + choice(['88', '66', '99', '520', '666', '888', str(randint(10, 99))])
     elif style == 2:
-        # alex1998 / emma2001
         return choice(first_names) + str(randint(1988, 2006))
     elif style == 3:
-        # alex_smith
         return choice(first_names) + '_' + choice(last_names)
     elif style == 4:
-        # alex.smith88
         return choice(first_names) + '.' + choice(last_names) + str(randint(10, 99))
     elif style == 5:
-        # alex123
         return choice(first_names) + str(randint(100, 999))
     else:
-        # alex_88 / lucy_520
         return choice(first_names) + '_' + choice(['88', '66', '99', '520', '1314', str(randint(10, 99))])
+
+
+def make_password(prefix: str) -> str:
+    """统一强密码生成，保证长度和复杂度"""
+    return (prefix + 'Anodes!1860')[:16]
 
 
 def get_sub(session: PanelSession, opt: dict, cache: dict[str, list[str]]):
@@ -91,7 +90,7 @@ def should_turn(session: PanelSession, opt: dict, cache: dict[str, list[str]]):
         msg = str(e)
         if '邮箱' in msg and ('不存在' in msg or '禁' in msg or '黑' in msg):
             if (d := cache['email'][0].split('@')[1]) not in ('gmail.com', 'qq.com', g0(cache, 'email_domain')):
-                cache['banned_domains'].append(d)
+                cache.setdefault('banned_domains', []).append(d)
             return 2,
         raise e
 
@@ -122,16 +121,17 @@ def _get_email_and_email_code(kwargs, session: PanelSession, opt: dict, cache: d
         except Exception as e:
             msg = str(e)
             if '禁' in msg or '黑' in msg:
-                cache['banned_domains'].append(email.split('@')[1])
+                cache.setdefault('banned_domains', []).append(email.split('@')[1])
                 continue
             raise Exception(f'发送邮箱验证码失败({email}): {e}')
-        email_code = tm.get_email_code(g0(cache, 'name') or '', timeout=35)  # 从默认60秒降到35秒
+        email_code = tm.get_email_code(g0(cache, 'name') or '', timeout=35)
         if not email_code:
-            cache['banned_domains'].append(email.split('@')[1])
+            cache.setdefault('banned_domains', []).append(email.split('@')[1])
             raise Exception(f'获取邮箱验证码超时({email})')
         kwargs['email_code'] = email_code
-        # 强制密码长度
-        kwargs['password'] = (email_prefix + 'Anodes!1860')[:16]
+        # 修复：从当前 email 提取前缀生成密码，避免 NameError
+        prefix = email.split('@')[0]
+        kwargs['password'] = make_password(prefix)
         return email
 
 
@@ -143,12 +143,9 @@ def register(session: PanelSession, opt: dict, cache: dict[str, list[str]], log:
     elif 'invite_code' in opt:
         kwargs['invite_code'] = choice(opt['invite_code'].split())
 
-    # 使用更自然的随机前缀
     email_prefix = natural_rand_id()
     email = kwargs['email'] = f"{email_prefix}@{g0(cache, 'email_domain', default='gmail.com')}"
-    
-    # 强制密码长度 ≥ 10，避免“密码必须大于8个字符”
-    kwargs['password'] = (email_prefix + 'Anodes!1860')[:16]
+    kwargs['password'] = make_password(email_prefix)
 
     while True:
         if not (msg := _register(session, **kwargs)):
@@ -183,7 +180,7 @@ def register(session: PanelSession, opt: dict, cache: dict[str, list[str]], log:
                     else:
                         email_prefix = natural_rand_id()
                         email = kwargs['email'] = f"{email_prefix}@{email.split('@')[1]}"
-                        kwargs['password'] = (email_prefix + 'Anodes!1860')[:16]
+                        kwargs['password'] = make_password(email_prefix)
 
                     if (msg := _register(session, **kwargs)):
                         break
@@ -210,7 +207,7 @@ def register(session: PanelSession, opt: dict, cache: dict[str, list[str]], log:
                 break
             email_prefix = natural_rand_id()
             email = kwargs['email'] = f'{email_prefix}@qq.com'
-            kwargs['password'] = (email_prefix + 'Anodes!1860')[:16]
+            kwargs['password'] = make_password(email_prefix)
         elif '验证码' in msg:
             email = _get_email_and_email_code(kwargs, session, opt, cache)
         elif '联' in msg:
@@ -430,8 +427,8 @@ if __name__ == '__main__':
         if host not in opt:
             del cache[host]
 
-    # ========== 核心修改：使用 as_completed + 单任务超时，彻底解决卡死 ==========
-    with ThreadPoolExecutor(max_workers=20) as executor:
+    # 降低并发 + 单任务超时，减少僵尸线程导致的卡死
+    with ThreadPoolExecutor(max_workers=12) as executor:
         futures = {
             executor.submit(get_trial, h, opt[h], cache[h]): h
             for h, *_ in cfg
@@ -439,7 +436,7 @@ if __name__ == '__main__':
         for future in as_completed(futures):
             host = futures[future]
             try:
-                log = future.result(timeout=90)  # 单个站点最多等待 90 秒
+                log = future.result(timeout=90)
                 for line in log:
                     print(line)
             except TimeoutError:
