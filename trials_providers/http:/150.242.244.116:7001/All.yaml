@@ -1,0 +1,5 @@
+%YAML 1.1
+---
+proxies:
+- {name: 🇭🇰 香港节点 - 互悦, server: 47.76.127.88, port: 5566, type: vmess, uuid: d0225aef-18d4-40c5-b722-2077dd400f3e, alterId: 0, cipher: auto, tls: false, skip-cert-verify: true, udp: true}
+- {name: 互悦测试 - 互悦, server: 150.242.244.116, port: 2648, type: vmess, uuid: d0225aef-18d4-40c5-b722-2077dd400f3e, alterId: 0, cipher: auto, tls: false, skip-cert-verify: true, udp: true}

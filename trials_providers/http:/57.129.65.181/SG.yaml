@@ -1,0 +1,6 @@
+%YAML 1.1
+---
+proxies:
+- {name: 🇸🇬 V1 | 新加坡1 - Bingo Cloud, server: sg91.appmimi.com, port: 49041, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇸🇬 V1 | 新加坡2 - Bingo Cloud, server: sg92.appmimi.com, port: 49042, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇸🇬 V1 | 新加坡3 - Bingo Cloud, server: sg93.appmimi.com, port: 49043, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}

@@ -1,0 +1,4 @@
+%YAML 1.1
+---
+proxies:
+- {name: Test-SS-Node-213.111.130.46 - RCK, server: 213.111.130.46, port: 27012, type: ss, cipher: aes-128-gcm, password: 5a1a0c25-16d5-4615-98cc-61ff2d428fd8, udp: true}

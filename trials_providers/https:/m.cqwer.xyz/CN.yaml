@@ -1,0 +1,4 @@
+%YAML 1.1
+---
+proxies:
+- {name: 🇭🇰 HK-01 - V2Board, server: m.cqwer.xyz, port: 443, type: vmess, uuid: c7d8a16d-5a37-488b-866a-0affbd950e4e, alterId: 0, cipher: auto, tls: true, skip-cert-verify: true, servername: m.cqwer.xyz, network: ws, ws-opts: {path: /b3f8a2c1, headers: {Host: m.cqwer.xyz}}, udp: true}

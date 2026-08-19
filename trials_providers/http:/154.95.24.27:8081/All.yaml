@@ -1,0 +1,6 @@
+%YAML 1.1
+---
+proxies:
+- {name: ℹ️ 请到官网 - 飞马加速, server: 127.0.0.1, port: 443, type: ss, cipher: aes-128-gcm, password: subscription-reminder, udp: true}
+- {name: 【feima1.shop】 - 飞马加速, server: 127.0.0.1, port: 443, type: ss, cipher: aes-128-gcm, password: subscription-reminder, udp: true}
+- {name: ℹ️ 流量情况：0 B/0 B - 飞马加速, server: 127.0.0.1, port: 443, type: ss, cipher: aes-128-gcm, password: subscription-reminder, udp: true}

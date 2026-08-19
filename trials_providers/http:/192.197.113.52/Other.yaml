@@ -1,0 +1,5 @@
+%YAML 1.1
+---
+proxies:
+- {name: 🇨🇦 加拿大 - 快捷VPN, server: 27.152.180.32, port: 28013, type: ss, cipher: chacha20-ietf-poly1305, password: 2dcfd328-280a-4c23-a0d0-2b5372907448, udp: true}
+- {name: 🇬🇧 英国 - 快捷VPN, server: 27.152.180.32, port: 28056, type: ss, cipher: chacha20-ietf-poly1305, password: 2dcfd328-280a-4c23-a0d0-2b5372907448, udp: true}

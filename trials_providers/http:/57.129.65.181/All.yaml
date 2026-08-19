@@ -1,0 +1,41 @@
+%YAML 1.1
+---
+proxies:
+- {name: ℹ️ 📌官网 https://2025.bingoboot.com/ - Bingo Cloud, server: hk90.appmimi.com, port: 49000, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: ℹ️ 🆘邮箱 sbgetvpn@gmail.com - Bingo Cloud, server: hk90.appmimi.com, port: 49000, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: V0 | ✅免费体验·随机线路 - Bingo Cloud, server: hk90.appmimi.com, port: 49000, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港1 - Bingo Cloud, server: hk91.appmimi.com, port: 49011, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港2 - Bingo Cloud, server: hk92.appmimi.com, port: 49012, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港3 - Bingo Cloud, server: hk93.appmimi.com, port: 49013, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港4 - Bingo Cloud, server: hk94.appmimi.com, port: 49014, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港5 - Bingo Cloud, server: hk95.appmimi.com, port: 49015, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港6 - Bingo Cloud, server: hk96.appmimi.com, port: 49016, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港7 - Bingo Cloud, server: 31.77.178.7, port: 49017, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港8 - Bingo Cloud, server: hk98.appmimi.com, port: 49018, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港9 - Bingo Cloud, server: 151.242.182.240, port: 49019, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇭🇰 V1 | 香港10 - Bingo Cloud, server: hk9a.appmimi.com, port: 49020, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇹🇼 V1 | 台湾1 - Bingo Cloud, server: tw91.appmimi.com, port: 49021, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇹🇼 V1 | 台湾2 - Bingo Cloud, server: tw92.appmimi.com, port: 49022, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇰🇷 V1 | 韩国1 - Bingo Cloud, server: kr91.appmimi.com, port: 49026, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇯🇵 V1 | 日本1 - Bingo Cloud, server: jp91.appmimi.com, port: 49031, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇯🇵 V1 | 日本2 - Bingo Cloud, server: jp92.appmimi.com, port: 49032, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇯🇵 V1 | 日本3 - Bingo Cloud, server: jp93.appmimi.com, port: 49033, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇯🇵 V1 | 日本4 - Bingo Cloud, server: jp94.appmimi.com, port: 49034, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇯🇵 V1 | 日本5 - Bingo Cloud, server: jp95.appmimi.com, port: 49040, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇸🇬 V1 | 新加坡1 - Bingo Cloud, server: sg91.appmimi.com, port: 49041, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇸🇬 V1 | 新加坡2 - Bingo Cloud, server: sg92.appmimi.com, port: 49042, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇸🇬 V1 | 新加坡3 - Bingo Cloud, server: sg93.appmimi.com, port: 49043, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇹🇭 V1 | 泰国1 - Bingo Cloud, server: th91.appmimi.com, port: 49047, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇻🇳 V1 | 越南1 - Bingo Cloud, server: vn91.appmimi.com, port: 49048, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇹🇷 V1 | 土耳其1 - Bingo Cloud, server: tr91.appmimi.com, port: 49050, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇺🇸 V1 | 美国1 - Bingo Cloud, server: us91.appmimi.com, port: 49061, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇺🇸 V1 | 美国2 - Bingo Cloud, server: us92.appmimi.com, port: 49062, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇺🇸 V1 | 美国3 - Bingo Cloud, server: us93.appmimi.com, port: 49063, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇺🇸 V1 | 美国4 - Bingo Cloud, server: us94.appmimi.com, port: 49064, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇺🇸 V1 | 美国5 - Bingo Cloud, server: us95.appmimi.com, port: 49065, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇦🇷 V1 | 阿根廷1 - Bingo Cloud, server: ar91.appmimi.com, port: 49073, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇬🇧 V1 | 英国1 - Bingo Cloud, server: gb91.appmimi.com, port: 49081, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: 🇷🇺 V1 | 俄罗斯1 - Bingo Cloud, server: ru91.appmimi.com, port: 49094, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: '🇺🇸 V1 | [海外用户]美国1 - Bingo Cloud', server: dd01.appmimi.com, port: 19201, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: '🇺🇸 V1 | [海外用户]美国2 - Bingo Cloud', server: dd02.appmimi.com, port: 19201, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}
+- {name: V1 | 试验线路1 - Bingo Cloud, server: xj99.appmimi.com, port: 19201, type: ss, cipher: aes-256-gcm, password: c9dfc4bf-349a-4720-913d-166d71efa838, udp: true}

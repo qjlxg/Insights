@@ -1,0 +1,5 @@
+%YAML 1.1
+---
+proxies:
+- {name: ℹ️ 1.续费官网https://qinqin2022.com - 520, server: 1.1.1.1, port: 31500, type: ssr, cipher: chacha20, password: CnBwof, protocol: auth_aes128_md5, obfs: tls1.2_ticket_auth, protocol-param: 11521:6OlVFU, obfs-param: 08d2f11521.microsoft.com, udp: true}
+- {name: ℹ️ 2.qq群1017197334(售后续费） - 520, server: 959732781, port: 31500, type: ssr, cipher: chacha20, password: CnBwof, protocol: auth_aes128_md5, obfs: tls1.2_ticket_auth, protocol-param: 11521:6OlVFU, obfs-param: 08d2f11521.microsoft.com, udp: true}

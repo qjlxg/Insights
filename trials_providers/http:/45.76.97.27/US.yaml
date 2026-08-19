@@ -1,0 +1,7 @@
+%YAML 1.1
+---
+proxies:
+- {name: 🇺🇸 US-01 - Digilink, server: tw1.iplc.v2node.com, port: 14443, type: vmess, uuid: 7922e2d2-3c8f-45d4-87b7-1095e1cb3fdb, alterId: 0, cipher: auto, tls: false, skip-cert-verify: true, network: ws, ws-opts: {path: /, headers: {Host: tw1.iplc.v2node.com}}, udp: true}
+- {name: 🇺🇸 US-02 - Digilink, server: tw1.iplc.v2node.com, port: 14443, type: vmess, uuid: 7922e2d2-3c8f-45d4-87b7-1095e1cb3fdb, alterId: 0, cipher: auto, tls: false, skip-cert-verify: true, network: ws, ws-opts: {path: /, headers: {Host: tw1.iplc.v2node.com}}, udp: true}
+- {name: 🇺🇸 US-03 - Digilink, server: tw1.iplc.v2node.com, port: 14443, type: vmess, uuid: 7922e2d2-3c8f-45d4-87b7-1095e1cb3fdb, alterId: 0, cipher: auto, tls: false, skip-cert-verify: true, network: ws, ws-opts: {path: /, headers: {Host: tw1.iplc.v2node.com}}, udp: true}
+- {name: 🇺🇸 US-04 - Digilink, server: tw1.iplc.v2node.com, port: 14443, type: vmess, uuid: 7922e2d2-3c8f-45d4-87b7-1095e1cb3fdb, alterId: 0, cipher: auto, tls: false, skip-cert-verify: true, network: ws, ws-opts: {path: /, headers: {Host: tw1.iplc.v2node.com}}, udp: true}

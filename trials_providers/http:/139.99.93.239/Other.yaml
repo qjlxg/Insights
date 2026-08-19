@@ -1,0 +1,5 @@
+%YAML 1.1
+---
+proxies:
+- {name: 🛒 暂无套餐 - 扬帆云, server: 1.1.1.1, port: 443, type: ss, cipher: aes-128-gcm, password: !<str> 00000000000000000000000000000000, udp: true}
+- {name: 🌐 a4.yfyfind.net - 扬帆云, server: 1.1.1.1, port: 443, type: ss, cipher: aes-128-gcm, password: !<str> 00000000000000000000000000000000, udp: true}
