@@ -1,5 +1,5 @@
 import os
-from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError
+from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 from random import choice, randint
 from time import time
@@ -9,67 +9,24 @@ from apis import PanelSession, TempEmail, guess_panel, panel_class_map
 from subconverter import gen_base64_and_clash_config, get
 from utils import (clear_files, g0, keep, list_file_paths, list_folder_paths,
                    rand_id, read, read_cfg, remove, size2str, str2timestamp,
-                   timestamp2str, to_zero, write, write_cfg, str2size)
-
-
-# ==================== 更接近真人的用户名生成（大幅降低风控） ====================
-def natural_rand_id():
-    first_names = [
-        'alex', 'mike', 'john', 'david', 'james', 'robert', 'tom', 'jack',
-        'kevin', 'brian', 'jason', 'eric', 'steven', 'daniel', 'chris',
-        'andy', 'tony', 'peter', 'mark', 'paul', 'steve',
-        'lucy', 'lily', 'amy', 'anna', 'sara', 'emma', 'olivia', 'sophia',
-        'nina', 'mia', 'ava', 'ella', 'grace', 'chloe', 'zoe', 'ruby',
-        'chen', 'wang', 'li', 'zhang', 'liu', 'yang', 'huang', 'zhao',
-        'lin', 'wu', 'xu', 'sun', 'ma', 'zhu', 'hu', 'guo'
-    ]
-    last_names = ['smith', 'johnson', 'brown', 'wilson', 'taylor', 'clark', 'lee', 'walker',
-                  'wang', 'li', 'zhang', 'liu', 'chen', 'yang', 'huang', 'zhao']
-    style = randint(1, 6)
-    if style == 1:
-        return choice(first_names) + choice(['88', '66', '99', '520', '666', '888', str(randint(10, 99))])
-    elif style == 2:
-        return choice(first_names) + str(randint(1988, 2006))
-    elif style == 3:
-        return choice(first_names) + '_' + choice(last_names)
-    elif style == 4:
-        return choice(first_names) + '.' + choice(last_names) + str(randint(10, 99))
-    elif style == 5:
-        return choice(first_names) + str(randint(100, 999))
-    else:
-        return choice(first_names) + '_' + choice(['88', '66', '99', '520', '1314', str(randint(10, 99))])
-
-def make_password(prefix: str) -> str:
-    return (prefix + 'Anodes!1860')[:16]
+                   timestamp2str, to_zero, write, write_cfg)
 
 
 def get_sub(session: PanelSession, opt: dict, cache: dict[str, list[str]]):
-    url = cache.get('sub_url', [None])[0]
-    if not url:
-        raise Exception('sub_url 不存在')
-
-    name = g0(cache, 'name') or ''
-    suffix = ' - ' + str(name)
+    url = cache['sub_url'][0]
+    suffix = ' - ' + g0(cache, 'name')
     if 'speed_limit' in opt:
-        suffix += ' ⚠️限速 ' + str(opt.get('speed_limit', ''))
-
+        suffix += ' ⚠️限速 ' + opt['speed_limit']
     try:
         info, *rest = get(url, suffix)
     except Exception:
-        try:
-            origin = urlsplit(session.origin)[:2]
-            url = '|'.join(urlunsplit(origin + urlsplit(part)[2:]) for part in url.split('|'))
-            info, *rest = get(url, suffix)
-            cache['sub_url'][0] = url
-        except Exception as e:
-            raise Exception(f'获取订阅失败: {e}')
-
+        origin = urlsplit(session.origin)[:2]
+        url = '|'.join(urlunsplit(origin + urlsplit(part)[2:]) for part in url.split('|'))
+        info, *rest = get(url, suffix)
+        cache['sub_url'][0] = url
     if not info and hasattr(session, 'get_sub_info'):
-        try:
-            session.login(cache['email'][0])
-            info = session.get_sub_info()
-        except Exception:
-            pass
+        session.login(cache['email'][0])
+        info = session.get_sub_info()
     return info, *rest
 
 
@@ -115,16 +72,14 @@ def _get_email_and_email_code(kwargs, session: PanelSession, opt: dict, cache: d
         except Exception as e:
             msg = str(e)
             if '禁' in msg or '黑' in msg:
-                cache.setdefault('banned_domains', []).append(email.split('@')[1])
+                cache['banned_domains'].append(email.split('@')[1])
                 continue
             raise Exception(f'发送邮箱验证码失败({email}): {e}')
-        email_code = tm.get_email_code(g0(cache, 'name') or '', timeout=35)
+        email_code = tm.get_email_code(g0(cache, 'name'))
         if not email_code:
-            cache.setdefault('banned_domains', []).append(email.split('@')[1])
+            cache['banned_domains'].append(email.split('@')[1])
             raise Exception(f'获取邮箱验证码超时({email})')
         kwargs['email_code'] = email_code
-        prefix = email.split('@')[0]
-        kwargs['password'] = make_password(prefix)
         return email
 
 
@@ -136,10 +91,7 @@ def register(session: PanelSession, opt: dict, cache: dict[str, list[str]], log:
     elif 'invite_code' in opt:
         kwargs['invite_code'] = choice(opt['invite_code'].split())
 
-    email_prefix = natural_rand_id()
-    email = kwargs['email'] = f"{email_prefix}@{g0(cache, 'email_domain', default='gmail.com')}"
-    kwargs['password'] = make_password(email_prefix)
-
+    email = kwargs['email'] = f"{rand_id()}@{g0(cache, 'email_domain', default='gmail.com')}"
     while True:
         if not (msg := _register(session, **kwargs)):
             if g0(cache, 'auto_invite', 'T') == 'T' and hasattr(session, 'get_invite_info'):
@@ -171,9 +123,7 @@ def register(session: PanelSession, opt: dict, cache: dict[str, list[str]], log:
                     if 'email_code' in kwargs:
                         email = _get_email_and_email_code(kwargs, session, opt, cache)
                     else:
-                        email_prefix = natural_rand_id()
-                        email = kwargs['email'] = f"{email_prefix}@{email.split('@')[1]}"
-                        kwargs['password'] = make_password(email_prefix)
+                        email = kwargs['email'] = f"{rand_id()}@{email.split('@')[1]}"
 
                     if (msg := _register(session, **kwargs)):
                         break
@@ -198,9 +148,7 @@ def register(session: PanelSession, opt: dict, cache: dict[str, list[str]], log:
         if '后缀' in msg:
             if email.split('@')[1] != 'gmail.com':
                 break
-            email_prefix = natural_rand_id()
-            email = kwargs['email'] = f'{email_prefix}@qq.com'
-            kwargs['password'] = make_password(email_prefix)
+            email = kwargs['email'] = f'{rand_id()}@qq.com'
         elif '验证码' in msg:
             email = _get_email_and_email_code(kwargs, session, opt, cache)
         elif '联' in msg:
@@ -349,22 +297,33 @@ def cache_sub_info(info, opt: dict, cache: dict[str, list[str]]):
 
 
 def save_sub_base64_and_clash(base64, clash, host, opt: dict):
-    return 0
+    return gen_base64_and_clash_config(
+        base64_path=f'trials/{host}',
+        clash_path=f'trials/{host}.yaml',
+        providers_dir=f'trials_providers/{host}',
+        base64=base64,
+        clash=clash,
+        exclude=opt.get('exclude')
+    )
 
 
 def save_sub(info, base64, clash, base64_url, clash_url, host, opt: dict, cache: dict[str, list[str]], log: list):
     cache.pop('保存订阅信息失败', None)
+    cache.pop('保存base64/clash订阅失败', None)
+
     try:
         cache_sub_info(info, opt, cache)
     except Exception as e:
         cache['保存订阅信息失败'] = [e]
         log.append(f'保存订阅信息失败({host})({clash_url}): {e}')
-    
-    if info and 'node_n' in info:
-        node_n = info['node_n']
+    try:
+        node_n = save_sub_base64_and_clash(base64, clash, host, opt)
         if (d := node_n - int(g0(cache, 'node_n', 0))) != 0:
             log.append(f'{host} 节点数 {"+" if d > 0 else ""}{d} ({node_n})')
         cache['node_n'] = node_n
+    except Exception as e:
+        cache['保存base64/clash订阅失败'] = [e]
+        log.append(f'保存base64/clash订阅失败({host})({base64_url})({clash_url}): {e}')
 
 
 def get_and_save(session: PanelSession, host, opt: dict, cache: dict[str, list[str]], log: list):
@@ -413,87 +372,44 @@ if __name__ == '__main__':
         write('.github/repo_get_trial', cur_repo)
 
     cfg = read_cfg('trial.cfg')['default']
+
     opt = build_options(cfg)
+
     cache = read_cfg('trial.cache', dict_items=True)
 
     for host in [*cache]:
         if host not in opt:
             del cache[host]
 
-    with ThreadPoolExecutor(max_workers=20) as executor:
-        futures = {
-            executor.submit(get_trial, h, opt[h], cache[h]): h
-            for h, *_ in cfg
-        }
-        for future in as_completed(futures):
-            host = futures[future]
-            try:
-                log = future.result(timeout=90)
-                for line in log:
-                    print(line)
-            except TimeoutError:
-                print(f'{host} 超时（>90s），已跳过')
-                if host in cache:
-                    cache[host]['更新订阅链接/续费续签失败'] = ['超时（>90s）']
-            except Exception as e:
-                print(f'{host} 执行异常: {e}')
+    for path in list_file_paths('trials'):
+        host, ext = os.path.splitext(os.path.basename(path))
+        if ext != '.yaml':
+            host += ext
+        else:
+            host = host.split('_')[0]
+        if host not in opt:
+            remove(path)
 
-    print('已取消本地配置文件的聚合生成。')
+    for path in list_folder_paths('trials_providers'):
+        host = os.path.basename(path)
+        if '.' in host and host not in opt:
+            clear_files(path)
+            remove(path)
 
-    def get_sort_key(host):
-        c = cache.get(host, {})
-        sub_info = c.get('sub_info')
-        if not sub_info or not isinstance(sub_info, list) or len(sub_info) < 3:
-            return (0, 0, 0)
-        
-        try:
-            has_data = 1
-            remain_val = str2size(sub_info[1]) - str2size(sub_info[0])
-            expire_str = sub_info[2]
-            if expire_str == '永不过期':
-                time_val = 4102416000 
-            else:
-                time_val = str2timestamp(expire_str)
-            
-            return (has_data, remain_val, time_val)
-        except:
-            return (0, 0, 0)
+    with ThreadPoolExecutor(32) as executor:
+        args = [(h, opt[h], cache[h]) for h, *_ in cfg]
+        for log in executor.map(get_trial, *zip(*args)):
+            for line in log:
+                print(line)
 
-    sorted_keys = sorted(cache.keys(), key=get_sort_key, reverse=True)
-    new_cache = {k: cache[k] for k in sorted_keys}
-    write_cfg('trial.cache', new_cache)
+    total_node_n = gen_base64_and_clash_config(
+        base64_path='trial',
+        clash_path='trial.yaml',
+        providers_dir='trials_providers',
+        base64_paths=(path for path in list_file_paths('trials') if os.path.splitext(path)[1].lower() != '.yaml'),
+        providers_dirs=(path for path in list_folder_paths('trials_providers') if '.' in os.path.basename(path))
+    )
 
-    valid_subs = []
-    for host, data in new_cache.items():
-        sub_info = data.get('sub_info')
-        sub_url = data.get('sub_url')
-        
-        if not sub_info or not sub_url:
-            continue
-            
-        try:
-            remain_val = str2size(sub_info[1]) - str2size(sub_info[0])
-        except:
-            remain_val = 0
-            
-        if remain_val < 1073741824: 
-            continue
+    print('总节点数', total_node_n)
 
-        info_str = " ".join(map(str, sub_info))
-        url = sub_url[0]
-        
-        if "永不过期" in info_str:
-            valid_subs.append(url)
-        elif "days" in info_str:
-            try:
-                time_part = info_str.split('剩余')[1].split(' ', 2)[2]
-                if "days" in time_part:
-                    days_val = int(time_part.split('days')[0].strip())
-                    if days_val > 0:
-                        valid_subs.append(url)
-            except:
-                pass
-                
-    if valid_subs:
-        with open('sys_config_01.bak', 'a', encoding='utf-8') as f:
-            f.write("\n".join(valid_subs) + "\n")
+    write_cfg('trial.cache', cache)
