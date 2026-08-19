@@ -117,7 +117,7 @@ class Session(requests.Session):
         self.mount('http://', HTTPAdapter(max_retries=Retry(total=3, backoff_factor=0.1)))
         self.max_redirects = max_redirects
         self.allow_redirects = allow_redirects
-        self.headers['User-Agent'] = user_agent or 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
+        self.headers['User-Agent'] = user_agent or 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
         self.set_base(base)
 
     def set_base(self, base):
